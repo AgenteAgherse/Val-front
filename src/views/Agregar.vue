@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import axios from 'axios'
 import router from '../router'
+import { postInstance } from '../Services/crud'
 
 const nuevo = ref({
   nombre: '',
   correo: '',
 })
 function register() {
-  axios.post('http://localhost:8080', nuevo.value).then((res) => {
-    router.push('/')
-  })
+  console.log(nuevo)
+  const info = postInstance('', nuevo.value)
+  router.push('/')
 }
 </script>
 
 <template>
   <div>
-    <h3 class="text-3xl font-medium text-gray-700">
+    <h3 class="h3">
       Agregar una Persona
     </h3>
 
@@ -28,7 +28,7 @@ function register() {
               <label class="text-gray-700" for="username">Nombre</label>
               <input
                 v-model="nuevo.nombre"
-                class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                class="input"
                 type="text"
               >
             </div>
@@ -37,7 +37,7 @@ function register() {
               <label class="text-gray-700" for="emailAddress">Correo Electrónico</label>
               <input
                 v-model="nuevo.correo"
-                class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                class="input"
                 type="email"
               >
             </div>
@@ -45,7 +45,7 @@ function register() {
 
           <div class="mt-4">
             <div class="min-w-full mt-2">
-              <button class="px-4 mt-2 min-w-full py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500">
+              <button class="button-primary">
                 <span>Registrar</span>
               </button>
             </div>

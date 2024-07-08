@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import router from '../router'
+import { getInstance } from '../Services/crud'
 
 const listado = ref([])
-onMounted(() => {
-  axios.get('http://localhost:8080/')
-    .then((response: any) => {
-      listado.value = response.data
-    })
-    .catch((error: any) => {
-      alert(error)
-    })
+const info = getInstance('', null)
+info.then((res) => {
+  listado.value = res.data
 })
 </script>
 
 <template>
   <div>
-    <h3 class="text-3xl font-medium text-gray-700">
+    <h3 class="h3">
       Listado de personas
     </h3>
 
@@ -29,16 +24,16 @@ onMounted(() => {
           <table class="min-w-full">
             <thead>
               <tr>
-                <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-700 uppercase border-b border-gray-200 bg-gray-50">
+                <th class="table-header">
                   Identificación
                 </th>
-                <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-700 uppercase border-b border-gray-200 bg-gray-50">
+                <th class="table-header">
                   Nombre
                 </th>
-                <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-700 uppercase border-b border-gray-200 bg-gray-50">
+                <th class="table-header">
                   Correo Electrónico
                 </th>
-                <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-700 uppercase border-b border-gray-200 bg-gray-50">
+                <th class="table-header">
                   Acciones
                 </th>
               </tr>
@@ -56,7 +51,7 @@ onMounted(() => {
                   {{ persona.correo }}
                 </td>
                 <td class="p-2">
-                  <button class="px-4 mt-2 min-w-full py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500" @click="router.push(`/Ver/${persona.id}`)">
+                  <button class="button-primary" @click="router.push(`/Ver/${persona.id}`)">
                     <span>Ver</span>
                   </button>
                   <button class="px-4 mt-2 min-w-full py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-yellow-600 rounded-md hover:bg-yellow-500 focus:outline-none focus:bg-yellow-500" @click="router.push(`/Editar/${persona.id}`)">
@@ -69,7 +64,7 @@ onMounted(() => {
         </div>
 
         <div class="min-w-full mt-2">
-          <button class="px-4 mt-2 min-w-full py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500" @click="router.push('/Agregar')">
+          <button class="button-primary" @click="router.push('/Agregar')">
             <span>Agregar Persona</span>
           </button>
         </div>

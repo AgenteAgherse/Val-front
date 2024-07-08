@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
 import router from '../router'
+import { getInstance } from '../Services/crud'
 
 const frontRoute = useRoute()
 const id = frontRoute.params.id
@@ -10,8 +10,9 @@ const id = frontRoute.params.id
 if (id === undefined || id === null)
   router.push('/')
 
+const info = getInstance(`${id}`, null)
 const data = ref()
-axios.get(`http://localhost:8080/${id}`).then((res) => {
+info.then((res) => {
   data.value = res.data
 })
 </script>
@@ -27,10 +28,10 @@ axios.get(`http://localhost:8080/${id}`).then((res) => {
         <table class="min-w-full leading-normal">
           <thead>
             <tr>
-              <th class="px-5 py-3 text-xs font-semibold tracking-wider text-center text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200">
+              <th class="table-header">
                 <strong>Información</strong>
               </th>
-              <th class="px-5 py-3 text-xs font-semibold tracking-wider text-center text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200">
+              <th class="table-header">
                 Valor
               </th>
             </tr>
@@ -74,7 +75,7 @@ axios.get(`http://localhost:8080/${id}`).then((res) => {
 
     <div class="flex flex-col mt-8">
       <div class="min-w-full mt-2">
-        <button class="px-4 mt-2 min-w-full py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500" @click="router.push('/')">
+        <button class="button-primary" @click="router.push('/')">
           <span>Volver a Inicio</span>
         </button>
       </div>

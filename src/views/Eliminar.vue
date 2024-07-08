@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import axios from 'axios'
+import { deleteInstance } from '../Services/crud'
 import router from '../router'
 
 const id = ref(0)
@@ -8,11 +8,13 @@ const id = ref(0)
 function eliminar() {
   const confirmacion = confirm('Estás seguro?')
   if (confirmacion) {
-    axios.delete(`http://localhost:8080/${id.value}`).then((res) => {
+    const deleted = deleteInstance(`${id.value}`, null)
+    deleted.then((res) => {
+      alert('Persona eliminada.')
       router.push('/')
     })
       .catch((error) => {
-        alert('No se encuentra a la persona')
+        alert(`Persona que no existía con anterioridad.\n${error}`)
       })
   }
 }
@@ -20,12 +22,12 @@ function eliminar() {
 
 <template>
   <div>
-    <h3 class="text-3xl font-medium text-gray-700">
+    <h3 class="h3">
       Eliminar una Persona
     </h3>
 
     <div class="relative mt-5">
-      <input v-model="id" type="text" class="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Buscar Identificación a eliminar">
+      <input v-model="id" type="text" class="input" placeholder="Buscar Identificación a eliminar">
     </div>
 
     <div class="min-w-full mt-2">

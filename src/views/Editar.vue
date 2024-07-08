@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
+import { getInstance, updateInstance } from '../Services/crud'
 import router from '../router'
 
 const frontRoute = useRoute()
@@ -11,7 +11,8 @@ if (id === undefined || id === null)
   router.push('/')
 
 const data = ref()
-axios.get(`http://localhost:8080/${id}`).then((res) => {
+const info = getInstance(`${id}`, null)
+info.then((res) => {
   data.value = res.data
 })
 
@@ -22,19 +23,17 @@ const nuevo = ref({
 })
 
 function actualizar() {
-  axios.put(`http://localhost:8080/${id}`, nuevo.value).then((res) => {
-    alert('Persona actualizada con éxito')
-    router.push('/')
+  const updated = updateInstance(`${id}`, nuevo.value)
+  updated.then((res) => {
+    data.value = res.data
   })
-    .catch((error) => {
-      alert('No se puede actualizar')
-    })
+  router.push('/')
 }
 </script>
 
 <template>
   <div>
-    <h3 class="text-3xl font-medium text-gray-700">
+    <h3 class="h3">
       Editar una Persona
     </h3>
 
@@ -46,7 +45,7 @@ function actualizar() {
               <label class="text-gray-700" for="username">Nombre</label>
               <input
                 v-model="nuevo.nombre"
-                class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                class="input"
                 type="text"
                 required
               >
@@ -56,7 +55,7 @@ function actualizar() {
               <label class="text-gray-700" for="emailAddress">Correo Electrónico</label>
               <input
                 v-model="nuevo.correo"
-                class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                class="input"
                 type="email"
                 required
               >
